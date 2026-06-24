@@ -1,0 +1,665 @@
+<antArtifact identifier="simulador-inversiones-mexico-junio-2026" type="text/html" title="Simulador de Inversiones (Mercado Pago 12%)">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador de Inversiones — México 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0d14; --surface: #111520; --card: #161c2e; --border: #1f2a42;
+    --accent: #00e5a0; --accent2: #ff6b35; --accent3: #ffd166;
+    --text: #e8edf8; --muted: #7a8aaa; --nd: #3a4160; --danger: #ff4d6d;
+    --nu-color: #820AD1;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; padding: 0; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: linear-gradient(rgba(0,229,160,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,160,0.03) 1px, transparent 1px); background-size: 40px 40px; pointer-events: none; z-index: 0; }
+  .container { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+  header { text-align: center; padding: 2rem 0 1.5rem; position: relative; }
+  .badge { display: inline-block; background: rgba(0,229,160,0.1); border: 1px solid rgba(0,229,160,0.3); color: var(--accent); font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.35rem 0.9rem; border-radius: 100px; margin-bottom: 1.2rem; }
+  h1 { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 4vw, 3.2rem); line-height: 1.1; margin-bottom: 0.6rem; }
+  h1 span { color: var(--accent); font-style: italic; }
+  .subtitle { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
+  
+  /* TOGGLE SWITCH ESTILOS */
+  .profile-switcher { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 2.5rem; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2); position: relative; overflow: hidden;}
+  .profile-switcher::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #820AD1, #ff6b35, #00e5a0); }
+  .ps-title { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; color: #fff;}
+  .toggle-wrap { display: flex; align-items: center; justify-content: center; gap: 1rem; }
+  .toggle-label { font-size: 0.85rem; font-weight: 500; color: var(--muted); transition: color 0.3s; cursor: pointer; }
+  .toggle-label.active-strict { color: var(--accent); }
+  .toggle-label.active-turbo { color: var(--nu-color); }
+  
+  .switch { position: relative; display: inline-block; width: 60px; height: 34px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--accent); transition: .4s; border-radius: 34px; }
+  .slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2);}
+  input:checked + .slider { background-color: var(--nu-color); }
+  input:checked + .slider:before { transform: translateX(26px); }
+
+  .section-title { font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.7rem; margin-top: 1rem;}
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .table-wrap { overflow-x: auto; border-radius: 16px; border: 1px solid var(--border); background: var(--card); margin-bottom: 2.5rem;}
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; min-width: 800px;}
+  thead tr { background: rgba(0,229,160,0.05); border-bottom: 1px solid var(--border); }
+  th { padding: 1rem 1.2rem; text-align: left; font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+  th.center { text-align: center; }
+  tbody tr { border-bottom: 1px solid rgba(255,255,255,0.04); transition: background 0.2s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: rgba(255,255,255,0.025); }
+  td { padding: 1rem 1.2rem; vertical-align: middle; }
+  td.center { text-align: center; }
+  
+  .entity-cell { display: flex; align-items: center; gap: 0.75rem; }
+  .entity-logo { width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 700; flex-shrink: 0; }
+  .entity-name { font-weight: 600; font-size: 0.9rem; }
+  .entity-type { font-size: 0.68rem; color: var(--muted); font-family: 'DM Mono', monospace; }
+  
+  .rate { display: inline-block; font-family: 'DM Mono', monospace; font-size: 0.92rem; font-weight: 500; padding: 0.3rem 0.7rem; border-radius: 7px; white-space: nowrap; min-width: 80px; text-align: center; transition: all 0.3s;}
+  .rate.top { background: rgba(0,229,160,0.15); color: #00e5a0; border: 1px solid rgba(0,229,160,0.3); }
+  .rate.high { background: rgba(0,229,160,0.08); color: #5ae0b8; border: 1px solid rgba(0,229,160,0.15); }
+  .rate.mid { background: rgba(255,209,102,0.08); color: #ffd166; border: 1px solid rgba(255,209,102,0.15); }
+  .rate.low { background: rgba(122,138,170,0.08); color: #9aabcc; border: 1px solid rgba(122,138,170,0.15); }
+  .rate.nd { background: transparent; color: var(--nd); border: 1px dashed #2a3550; font-size: 0.78rem; }
+  .rate.turbo { background: rgba(130,10,209,0.15); color: #d49fff; border: 1px solid rgba(130,10,209,0.4); box-shadow: 0 0 10px rgba(130,10,209,0.2);}
+  .rate.revo-cond { background: rgba(25,28,32,0.5); color: #fff; border: 1px solid #666; box-shadow: 0 0 10px rgba(255,255,255,0.1);}
+  
+  .prot-badge { font-size: 0.68rem; font-family: 'DM Mono', monospace; padding: 0.2rem 0.55rem; border-radius: 5px; white-space: nowrap;}
+  .prot-badge.ipab { background: rgba(0,229,160,0.1); color: #00e5a0; border: 1px solid rgba(0,229,160,0.2); }
+  .prot-badge.prosofipo { background: rgba(255,209,102,0.1); color: #ffd166; border: 1px solid rgba(255,209,102,0.2); }
+  .prot-badge.fondo { background: rgba(122,138,170,0.1); color: #9aabcc; border: 1px solid rgba(122,138,170,0.2); }
+
+  .calc-section { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 1.8rem; margin-bottom: 2rem; position: relative; overflow: hidden;}
+  .calc-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), #00b8ff, var(--accent)); background-size: 200% 100%; animation: shimmer 3s linear infinite; }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  .calc-title { font-family: 'DM Serif Display', serif; font-size: 1.3rem; margin-bottom: 0.3rem; }
+  .calc-subtitle { font-size: 0.82rem; color: var(--muted); margin-bottom: 1.5rem; }
+  
+  /* ESTADO DE LAS CUENTAS */
+  .state-toggle { grid-column: 1 / -1; margin-bottom: 0.5rem; }
+  .state-title { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.8rem; font-family: 'DM Mono', monospace; }
+  .state-options { display: flex; gap: 1rem; }
+  @media (max-width: 650px) { .state-options { flex-direction: column; } }
+  .state-radio { flex: 1; cursor: pointer; }
+  .state-radio input { display: none; }
+  .radio-card { border: 2px solid var(--border); border-radius: 10px; padding: 1rem; background: var(--surface); transition: all 0.2s; height: 100%;}
+  .state-radio input:checked + .radio-card { border-color: var(--accent); background: rgba(0,229,160,0.05); }
+  .radio-card strong { display: block; color: var(--text); font-size: 0.95rem; margin-bottom: 0.3rem; }
+  .radio-card span { font-size: 0.75rem; color: var(--muted); line-height: 1.3; display: block; }
+  
+  .calc-controls { display: grid; grid-template-columns: 1fr 1.5fr; gap: 1.2rem; margin-bottom: 1.5rem; margin-top: 1rem;}
+  @media (max-width: 650px) { .calc-controls { grid-template-columns: 1fr; } }
+  .input-group { display: flex; flex-direction: column; gap: 0.45rem; }
+  .input-group label { font-family: 'DM Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+  .input-wrap { position: relative; display: flex; align-items: center; }
+  .input-prefix { position: absolute; left: 0.9rem; font-family: 'DM Mono', monospace; font-size: 0.9rem; color: var(--accent); pointer-events: none; }
+  .calc-input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-family: 'DM Mono', monospace; font-size: 1rem; padding: 0.75rem 0.9rem 0.75rem 2rem; outline: none; transition: border-color 0.2s, box-shadow 0.2s; -webkit-appearance: none; }
+  .calc-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,229,160,0.1); }
+  .plazo-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .plazo-tab { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--muted); font-family: 'DM Mono', monospace; font-size: 0.75rem; padding: 0.55rem 0.8rem; cursor: pointer; transition: all 0.2s; flex: 1; text-align: center; min-width: 70px; }
+  .plazo-tab:hover { border-color: var(--accent); color: var(--accent); }
+  .plazo-tab.active { background: rgba(0,229,160,0.12); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+  
+  .results-title { font-family: 'DM Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.6rem; }
+  .results-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  
+  .results-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 0.9rem; }
+  .result-card { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.1rem; transition: border-color 0.2s, transform 0.2s; position: relative; overflow: hidden; display:flex; flex-direction: column; }
+  .result-card:hover { transform: translateY(-2px); }
+  .result-card.winner { border-color: rgba(0,229,160,0.4); }
+  .result-card.winner::after { content: '★ MAYOR GANANCIA'; position: absolute; top: 0.5rem; right: 0.6rem; font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--accent); letter-spacing: 0.08em; }
+  .result-card.nd-card { opacity: 0.45; }
+  .rc-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.8rem; }
+  .rc-logo { width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; flex-shrink: 0; }
+  .rc-name { font-size: 0.85rem; font-weight: 600; }
+  .rc-plazo { font-size: 0.68rem; color: var(--muted); font-family: 'DM Mono', monospace; }
+  .rc-rate { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); margin-bottom: 0.35rem; }
+  .rc-gain { font-family: 'DM Serif Display', serif; font-size: 1.3rem; color: var(--accent); margin-bottom: 0.15rem; }
+  .rc-gain.nd-val { color: var(--nd); font-size: 0.85rem; font-family: 'DM Mono', monospace; }
+  .rc-total { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: var(--muted); }
+  .rc-total span { color: var(--text); font-weight: 500; }
+  .rc-bar { height: 3px; border-radius: 3px; background: var(--border); margin: 0.6rem 0 0; overflow: hidden; margin-top: auto; }
+  .rc-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent), #00c9ff); transition: width 0.6s cubic-bezier(0.4,0,0.2,1); width: 0%; }
+  
+  .badge-divisor { display: inline-block; background: rgba(122,138,170,0.15); color: #9aabcc; font-size: 0.6rem; padding: 2px 5px; border-radius: 4px; margin-left: 5px; vertical-align: middle; }
+  .sub-note { font-size: 0.68rem; color: var(--muted); margin-top: 4px; display: block; line-height: 1.2; }
+  .alert-box { border-radius: 8px; padding: 0.6rem; margin-top: 0.6rem; font-size: 0.65rem; line-height: 1.3; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="badge">🚨 Actualización Crítica de Mercado</div>
+    <h1>Comparativo <span>General</span></h1>
+    <p class="subtitle">Ajustado con las nuevas tasas de Mercado Pago (12%) y Revolut.</p>
+  </header>
+
+  <!-- INTERRUPTOR DE PERFILES -->
+  <div class="profile-switcher">
+    <div class="ps-title">¿Qué tipo de estrategia prefieres evaluar?</div>
+    <div class="toggle-wrap">
+      <div id="lbl-strict" class="toggle-label active-strict" onclick="setProfile(false)">Estricta<br><span style="font-size:0.65rem;font-weight:normal">(Cero condiciones)</span></div>
+      <label class="switch">
+        <input type="checkbox" id="profileToggle" onchange="toggleProfile()">
+        <span class="slider"></span>
+      </label>
+      <div id="lbl-turbo" class="toggle-label" onclick="setProfile(true)">Flexible<br><span style="font-size:0.65rem;font-weight:normal">(Acepto misiones Nu/Rv)</span></div>
+    </div>
+  </div>
+
+  <!-- TABLA VISUAL CON LAS 7 ENTIDADES -->
+  <div class="section-title">TABLA DE TASAS (SE ADAPTA A TU PERFIL)</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Entidad</th>
+          <th class="center">7 días</th>
+          <th class="center">1 mes (28-30d)</th>
+          <th class="center">3 meses (90d)</th>
+          <th class="center">4 meses (122d)</th>
+          <th>Tipo de protección</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- NU (DINÁMICO) -->
+        <tr>
+          <td>
+            <div class="entity-cell">
+              <div class="entity-logo" style="background:#820AD1;color:#fff">Nu</div>
+              <div>
+                <div class="entity-name">Nu México</div>
+                <div id="nu-type-label" class="entity-type">Ahorro Congelado</div>
+              </div>
+            </div>
+          </td>
+          <td class="center" id="nu-td-7"></td>
+          <td class="center" id="nu-td-30"></td>
+          <td class="center" id="nu-td-90"></td>
+          <td class="center" id="nu-td-122"></td>
+          <td><span class="prot-badge prosofipo">PROSOFIPO 25k UDIs</span></td>
+        </tr>
+
+        <!-- REVOLUT (DINÁMICO) -->
+        <tr>
+          <td>
+            <div class="entity-cell">
+              <div class="entity-logo" style="background:#191C20;color:#fff;border:1px solid #333">Rv</div>
+              <div>
+                <div class="entity-name">Revolut</div>
+                <div id="rv-type-label" class="entity-type">Plan Estándar Base</div>
+              </div>
+            </div>
+          </td>
+          <td class="center" id="rv-td-7"></td>
+          <td class="center" id="rv-td-30"></td>
+          <td class="center" id="rv-td-90"></td>
+          <td class="center" id="rv-td-122"></td>
+          <td><span class="prot-badge ipab">IPAB 400k UDIs</span></td>
+        </tr>
+
+        <!-- OPENBANK -->
+        <tr>
+          <td>
+            <div class="entity-cell">
+              <div class="entity-logo" style="background:#ec0000;color:#fff">OB</div>
+              <div>
+                <div class="entity-name">Openbank</div>
+                <div class="entity-type">Cuenta Débito Open</div>
+              </div>
+            </div>
+          </td>
+          <td class="center"><span class="rate top">13.00%</span><br><span class="sub-note">Tope $40k<br>Exceso 7.30%</span></td>
+          <td class="center"><span class="rate top">13.00%</span><br><span class="sub-note">Tope $40k<br>Exceso 7.30%</span></td>
+          <td class="center"><span class="rate top">13.00%</span><br><span class="sub-note">Tope $40k<br>Exceso 7.30%</span></td>
+          <td class="center"><span class="rate top">13.00%</span><br><span class="sub-note">Tope $40k<br>Exceso 7.30%</span></td>
+          <td><span class="prot-badge ipab">IPAB 400k UDIs</span></td>
+        </tr>
+
+        <!-- FINSUS -->
+        <tr>
+          <td>
+            <div class="entity-cell">
+              <div class="entity-logo" style="background:#006B3E;color:#fff">Fn</div>
+              <div>
+                <div class="entity-name">Finsus</div>
+                <div class="entity-type">Inversión Fija</div>
+              </div>
+            </div>
+          </td>
+          <td class="center"><span class="rate mid">7.09%</span></td>
+          <td class="center"><span class="rate mid">7.19%</span></td>
+          <td class="center"><span class="rate high">7.59%</span></td>
+          <td class="center"><span class="rate top">11.50%</span><br><span class="sub-note">Promo Cosecha</span></td>
+          <td><span class="prot-badge prosofipo">PROSOFIPO 25k UDIs</span></td>
+        </tr>
+
+        <!-- MERCADO PAGO -->
+        <tr>
+          <td>
+            <div class="entity-cell">
+              <div class="entity-logo" style="background:#009EE3;color:#fff">MP</div>
+              <div>
+                <div class="entity-name">Mercado Pago</div>
+                <div class="entity-type">Fondo GBM (A la vista)</div>
+              </div>
+            </div>
+          </td>
+          <td class="center"><span class="rate top">12.00%</span><br><span class="sub-note" style="color:var(--accent3)">Tope $25k<br>Exceso 6%</span></td>
+          <td class="center"><span class="rate top">12.00%</span><br><span class="sub-note" style="color:var(--accent3)">Tope $25k<br>Exceso 6%</span></td>
+          <td class="center"><span class="rate top">12.00%</span><br><span class="sub-note" style="color:var(--accent3)">Tope $25k<br>Exceso 6%</span></td>
+          <td class="center"><span class="rate top">12.00%</span><br><span class="sub-note" style="color:var(--accent3)">Tope $25k<br>Exceso 6%</span></td>
+          <td><span class="prot-badge fondo">Fondo GBM (Sin Seguro)</span></td>
+        </tr>
+
+        <!-- STORI -->
+        <tr>
+          <td>
+            <div class="entity-cell">
+              <div class="entity-logo" style="background:#6A1BE4;color:#fff">St</div>
+              <div>
+                <div class="entity-name">Stori</div>
+                <div class="entity-type">Inversión+ Estándar</div>
+              </div>
+            </div>
+          </td>
+          <td class="center"><span class="rate nd">ND</span></td>
+          <td class="center"><span class="rate low">6.83%</span></td>
+          <td class="center"><span class="rate high">7.77%</span></td>
+          <td class="center"><span class="rate nd">ND</span></td>
+          <td><span class="prot-badge prosofipo">PROSOFIPO 25k UDIs</span></td>
+        </tr>
+
+        <!-- HEY BANCO -->
+        <tr>
+          <td>
+            <div class="entity-cell">
+              <div class="entity-logo" style="background:#FF6600;color:#fff">Hey</div>
+              <div>
+                <div class="entity-name">Hey Banco</div>
+                <div class="entity-type">Pagaré Clásico</div>
+              </div>
+            </div>
+          </td>
+          <td class="center"><span class="rate low">4.00%</span></td>
+          <td class="center"><span class="rate low">4.00%</span></td>
+          <td class="center"><span class="rate nd">ND</span></td>
+          <td class="center"><span class="rate nd">ND</span></td>
+          <td><span class="prot-badge ipab">IPAB 400k UDIs</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-title">SIMULADOR MATEMÁTICO EN TIEMPO REAL</div>
+  <div class="calc-section">
+    <div class="calc-title">💰 Proyección de Ganancias Brutas</div>
+    
+    <!-- SELECTOR DE ESTADO DE CUENTAS -->
+    <div class="state-toggle">
+      <div class="state-title">¿Cuál es el estado actual de tus cuentas?</div>
+      <div class="state-options">
+        <label class="state-radio">
+          <input type="radio" name="accountState" value="empty" checked onchange="render()">
+          <div class="radio-card">
+            <strong>🌱 Cuentas desde Cero ($0)</strong>
+            <span>Se aprovecharán los límites promocionales altos primero.</span>
+          </div>
+        </label>
+        <label class="state-radio">
+          <input type="radio" name="accountState" value="maxed" onchange="render()">
+          <div class="radio-card">
+            <strong>🏦 Cuentas Topadas</strong>
+            <span>Nu, Revolut, MP y OB ya superaron sus límites máximos. El monto a simular será 100% excedente.</span>
+          </div>
+        </label>
+      </div>
+    </div>
+    
+    <div class="calc-controls">
+      <div class="input-group">
+        <label>Monto extra a simular (MXN)</label>
+        <div class="input-wrap">
+          <span class="input-prefix">$</span>
+          <input type="number" class="calc-input" id="montoInput" value="30000" min="1" step="100">
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Plazo de inversión</label>
+        <div class="plazo-tabs">
+          <button class="plazo-tab" data-dias="7">7 días</button>
+          <button class="plazo-tab active" data-dias="30">1 mes</button>
+          <button class="plazo-tab" data-dias="90">3 meses</button>
+          <button class="plazo-tab" data-dias="122">4 meses (122d)</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="results-title">Resultados Calculados</div>
+    <div id="calcResults"></div>
+  </div>
+</div>
+
+<script>
+// BASES DE DATOS DE NU
+const nuStrict = {
+  id: 'nu', nombre: 'Nu México', tipo: 'Ahorro Congelado Base', logo: 'Nu', color: '#820AD1', baseDivisor: 365,
+  tasas: {
+    7:   { tasa: 0.0655, max: null },
+    30:  { tasa: 0.0660, max: null, diasOverride: 28 }, 
+    90:  { tasa: 0.0670, max: null },
+    122: null 
+  }
+};
+
+const nuTurbo = {
+  id: 'nu', nombre: 'Nu México', tipo: 'Cajita Turbo (A la vista)', logo: 'Nu', color: '#820AD1', baseDivisor: 365,
+  tasas: {
+    7:   { tasa: 0.1300, max: 25000, tasaAlt: 0.0650, isCondicionada: true },
+    30:  { tasa: 0.1300, max: 25000, tasaAlt: 0.0650, isCondicionada: true },
+    90:  { tasa: 0.1300, max: 25000, tasaAlt: 0.0650, isCondicionada: true },
+    122: { tasa: 0.1300, max: 25000, tasaAlt: 0.0650, isCondicionada: true } 
+  }
+};
+
+// BASES DE DATOS DE REVOLUT (ACTUALIZADO JUNIO 2026)
+const rvStrict = {
+  id: 'revolut', nombre: 'Revolut', tipo: 'Plan Estándar Base', logo: 'Rv', color: '#191C20', colorText: '#fff', baseDivisor: 365,
+  tasas: {
+    7:   { tasa: 0.0700, max: null },
+    30:  { tasa: 0.0700, max: null },
+    90:  { tasa: 0.0700, max: null },
+    122: { tasa: 0.0700, max: null }
+  }
+};
+
+const rvTurbo = {
+  id: 'revolut', nombre: 'Revolut', tipo: 'Estándar (Condicionado)', logo: 'Rv', color: '#191C20', colorText: '#fff', baseDivisor: 365,
+  tasas: {
+    7:   { tasa: 0.1500, max: 25000, tasaAlt: 0.0700, isCondicionada: true },
+    30:  { tasa: 0.1500, max: 25000, tasaAlt: 0.0700, isCondicionada: true },
+    90:  { tasa: 0.1500, max: 25000, tasaAlt: 0.0700, isCondicionada: true },
+    122: { tasa: 0.1500, max: 25000, tasaAlt: 0.0700, isCondicionada: true }
+  }
+};
+
+
+// RESTO DE LAS 5 ENTIDADES ADICIONALES (MERCADO PAGO AL 12%)
+const entidadesBase = [
+  {
+    id: 'mercadopago', nombre: 'Mercado Pago', tipo: 'Fondo GBM', logo: 'MP', color: '#009EE3', colorText: '#fff', baseDivisor: 365,
+    tasas: { 7: { custom: true }, 30: { custom: true }, 90: { custom: true }, 122: { custom: true } },
+    calc: function(monto, dias, isMaxedOut) {
+        let gTotal = 0, desglose = [], tasaMain = 0;
+        
+        if (isMaxedOut) {
+            tasaMain = 0.06;
+            gTotal = monto * tasaMain * (dias / 365);
+            desglose.push({ label: `Excedente puro @ 6.00%`, tasa: tasaMain, ganancia: gTotal});
+        } else {
+            if (monto <= 25000) {
+                tasaMain = 0.12;
+                gTotal = monto * tasaMain * (dias / 365);
+                desglose.push({ label: `Tope $25k @ 12.00%`, tasa: tasaMain, ganancia: gTotal});
+            } else {
+                tasaMain = 0.12;
+                gTotal = 25000 * tasaMain * (dias / 365);
+                desglose.push({ label: `Tope $25k de Ingreso @ 12.00%`, tasa: tasaMain, ganancia: gTotal});
+                desglose.push({ label: `Exceso mensual (Castigado) @ 0.00%`, tasa: 0.00, ganancia: 0});
+            }
+        }
+        return { gananciaTotal: gTotal, saldoFinal: monto + gTotal, tasa: tasaMain, max: 25000, diasCalculo: dias, desglose: desglose };
+    }
+  },
+  {
+    id: 'openbank', nombre: 'Openbank', tipo: 'Cuenta Débito', logo: 'OB', color: '#ec0000', baseDivisor: 365,
+    tasas: {
+      7:   { tasa: 0.1300, max: 40000, tasaAlt: 0.0730 },
+      30:  { tasa: 0.1300, max: 40000, tasaAlt: 0.0730 },
+      90:  { tasa: 0.1300, max: 40000, tasaAlt: 0.0730 },
+      122: { tasa: 0.1300, max: 40000, tasaAlt: 0.0730 }
+    }
+  },
+  {
+    id: 'finsus', nombre: 'Finsus', tipo: 'Plazo Fijo', logo: 'Fn', color: '#006B3E', baseDivisor: 360,
+    tasas: {
+      7:   { tasa: 0.0709, max: null },
+      30:  { tasa: 0.0719, max: null },
+      90:  { tasa: 0.0759, max: null },
+      122: { tasa: 0.1150, max: null } 
+    }
+  },
+  {
+    id: 'stori', nombre: 'Stori', tipo: 'Inversión+', logo: 'St', color: '#6A1BE4', baseDivisor: 360,
+    tasas: {
+      7:   null,
+      30:  { tasa: 0.0683, max: null },
+      90:  { tasa: 0.0777, max: null },
+      122: null 
+    }
+  },
+  {
+    id: 'heybanco', nombre: 'Hey Banco', tipo: 'Pagaré Clásico', logo: 'Hey', color: '#FF6600', colorText: '#fff', baseDivisor: 360,
+    tasas: {
+      7:   { tasa: 0.0400, max: null },
+      30:  { tasa: 0.0400, max: null },
+      90:  null,
+      122: null
+    }
+  }
+];
+
+let isTurboMode = false;
+let plazoActivo = 30;
+let montoActivo = 30000;
+
+const fmt = (n) => new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', minimumFractionDigits: 2 }).format(n);
+
+function setProfile(toTurbo) {
+  document.getElementById('profileToggle').checked = toTurbo;
+  toggleProfile();
+}
+
+function toggleProfile() {
+  isTurboMode = document.getElementById('profileToggle').checked;
+  
+  if(isTurboMode) {
+    document.getElementById('lbl-strict').classList.remove('active-strict');
+    document.getElementById('lbl-turbo').classList.add('active-turbo');
+    
+    // Actualizar Tabla Nu
+    document.getElementById('nu-type-label').innerText = "Cajita Turbo (13%)";
+    document.getElementById('nu-td-7').innerHTML = `<span class="rate turbo">13.00%</span><br><span class="sub-note">Tope $25k<br>Req 1 compra</span>`;
+    document.getElementById('nu-td-30').innerHTML = `<span class="rate turbo">13.00%</span><br><span class="sub-note">Tope $25k<br>Req 1 compra</span>`;
+    document.getElementById('nu-td-90').innerHTML = `<span class="rate turbo">13.00%</span><br><span class="sub-note">Tope $25k<br>Req 1 compra</span>`;
+    document.getElementById('nu-td-122').innerHTML = `<span class="rate turbo">13.00%</span><br><span class="sub-note">Tope $25k<br>Req 1 compra</span>`;
+    
+    // Actualizar Tabla Revolut
+    document.getElementById('rv-type-label').innerText = "Plan Estándar (15%)";
+    document.getElementById('rv-td-7').innerHTML = `<span class="rate revo-cond">15.00%</span><br><span class="sub-note">Tope $25k<br>Req 4 compras</span>`;
+    document.getElementById('rv-td-30').innerHTML = `<span class="rate revo-cond">15.00%</span><br><span class="sub-note">Tope $25k<br>Req 4 compras</span>`;
+    document.getElementById('rv-td-90').innerHTML = `<span class="rate revo-cond">15.00%</span><br><span class="sub-note">Tope $25k<br>Req 4 compras</span>`;
+    document.getElementById('rv-td-122').innerHTML = `<span class="rate revo-cond">15.00%</span><br><span class="sub-note">Tope $25k<br>Req 4 compras</span>`;
+
+  } else {
+    document.getElementById('lbl-strict').classList.add('active-strict');
+    document.getElementById('lbl-turbo').classList.remove('active-turbo');
+    
+    // Actualizar Tabla Nu a Estricto
+    document.getElementById('nu-type-label').innerText = "Ahorro Congelado Base";
+    document.getElementById('nu-td-7').innerHTML = `<span class="rate low">6.55%</span>`;
+    document.getElementById('nu-td-30').innerHTML = `<span class="rate low" title="28 días">6.60%</span><br><span class="sub-note">28 días</span>`;
+    document.getElementById('nu-td-90').innerHTML = `<span class="rate low">6.70%</span>`;
+    document.getElementById('nu-td-122').innerHTML = `<span class="rate nd">ND</span>`;
+    
+    // Actualizar Tabla Revolut a Estricto
+    document.getElementById('rv-type-label').innerText = "Plan Estándar Base";
+    document.getElementById('rv-td-7').innerHTML = `<span class="rate low">7.00%</span>`;
+    document.getElementById('rv-td-30').innerHTML = `<span class="rate low">7.00%</span>`;
+    document.getElementById('rv-td-90').innerHTML = `<span class="rate low">7.00%</span>`;
+    document.getElementById('rv-td-122').innerHTML = `<span class="rate low">7.00%</span>`;
+  }
+  
+  render();
+}
+
+function calcConDesglose(monto, e, dias, isMaxedOut) {
+  const tasaDato = e.tasas[dias];
+  if (!tasaDato) return null;
+  
+  if (e.calc) return e.calc(monto, dias, isMaxedOut);
+
+  const baseDivisor = e.baseDivisor;
+  const { tasa, max, tasaAlt, diasOverride, isCondicionada } = tasaDato;
+  let gananciaTotal = 0;
+  let desglose = [];
+  const diasCalculo = diasOverride || dias;
+  
+  let tasaFinal = tasa;
+
+  if (isMaxedOut && max !== null) {
+    gananciaTotal = monto * tasaAlt * (diasCalculo / baseDivisor);
+    desglose.push({ label: `Excedente puro @ ${(tasaAlt*100).toFixed(2)}%`, tasa: tasaAlt, ganancia: gananciaTotal });
+    tasaFinal = tasaAlt;
+  } else {
+    if (max !== null && monto > max) {
+      const g1 = max * tasa * (diasCalculo / baseDivisor);
+      gananciaTotal += g1;
+      desglose.push({ label: `Hasta ${fmt(max)} @ ${(tasa*100).toFixed(2)}%`, tasa: tasa, ganancia: g1 });
+      const g2 = (monto - max) * tasaAlt * (diasCalculo / baseDivisor);
+      gananciaTotal += g2;
+      desglose.push({ label: `Exceso (${fmt(monto - max)}) @ ${(tasaAlt*100).toFixed(2)}%`, tasa: tasaAlt, ganancia: g2 });
+    } else {
+      const g = monto * tasa * (diasCalculo / baseDivisor);
+      gananciaTotal += g;
+      desglose.push({ label: `Rendimiento Bruto @ ${(tasa*100).toFixed(2)}%`, tasa: tasa, ganancia: g });
+    }
+  }
+
+  return { gananciaTotal, saldoFinal: monto + gananciaTotal, tasa: tasaFinal, max: max, diasCalculo: diasCalculo, desglose: desglose, isCondicionada: isCondicionada };
+}
+
+function render() {
+  const monto = montoActivo;
+  const dias = plazoActivo;
+  const isMaxedOut = document.querySelector('input[name="accountState"]:checked').value === 'maxed';
+  
+  const container = document.getElementById('calcResults');
+
+  if (!monto || monto <= 0) return;
+
+  // Combinar entidades dinámicas
+  let entidadesActivas = [...entidadesBase];
+  entidadesActivas.unshift(isTurboMode ? rvTurbo : rvStrict); 
+  entidadesActivas.unshift(isTurboMode ? nuTurbo : nuStrict); 
+
+  const resultados = entidadesActivas.map(e => { return { entidad: e, resultado: calcConDesglose(monto, e, dias, isMaxedOut) }; });
+
+  const ganancias = resultados.filter(r => r.resultado).map(r => r.resultado.gananciaTotal);
+  const maxGanancia = Math.max(...ganancias);
+
+  const ordenados = [...resultados].sort((a, b) => {
+    if (!a.resultado && !b.resultado) return 0;
+    if (!a.resultado) return 1;
+    if (!b.resultado) return -1;
+    return b.resultado.gananciaTotal - a.resultado.gananciaTotal;
+  });
+
+  let html = `<div class="results-grid">`;
+
+  ordenados.forEach(({ entidad: e, resultado: r }) => {
+    const isWinner = r && r.gananciaTotal === maxGanancia;
+    const isND = !r;
+    const pct = r ? (r.gananciaTotal / maxGanancia * 100).toFixed(1) : 0;
+    
+    let specialBox = '';
+    
+    if(e.id === 'finsus' && dias === 122 && r) {
+      const g1 = monto * e.tasas[dias].tasa * (31 / 360), g2 = monto * e.tasas[dias].tasa * (30 / 360), g3 = monto * e.tasas[dias].tasa * (33 / 360), g4 = monto * e.tasas[dias].tasa * (29 / 360);
+      specialBox = `
+        <div class="alert-box" style="background: rgba(0, 107, 62, 0.15); border: 1px dashed #006B3E; color: #b5f0e0;">
+          <div style="margin-bottom:4px; font-weight:600; color:#00e5a0;">📅 Pago Mensual:</div>
+          <div style="display:flex; justify-content:space-between;"><span>Mes 1 a 4:</span> <span>${fmt(g1)} / ${fmt(g2)} / ${fmt(g3)} / ${fmt(g4)}</span></div>
+        </div>`;
+    }
+
+    if(e.id === 'mercadopago' && r) {
+      if (!isMaxedOut && monto > 25000) {
+        specialBox = `
+          <div class="alert-box" style="background: rgba(255, 209, 102, 0.15); border: 1px dashed var(--accent3); color: var(--accent3);">
+            <strong>⏳ Cuello de botella MP:</strong> Si depositas todo hoy, los $${fmt(monto - 25000)} extras darán 0% el primer mes.
+          </div>`;
+      } else if (isMaxedOut) {
+        specialBox = `
+          <div class="alert-box" style="background: rgba(122, 138, 170, 0.15); border: 1px dashed #7a8aaa; color: #9aabcc;">
+            <strong>ℹ️ Cuenta Topada:</strong> Como asumes que ya tienes $25k previos aquí, tu dinero extra rinde al 6% base.
+          </div>`;
+      }
+    }
+
+    if(e.id === 'nu' && r && r.isCondicionada) {
+       specialBox += `
+        <div class="alert-box" style="background: rgba(130, 10, 209, 0.15); border: 1px dashed #d49fff; color: #d49fff; margin-top:0.3rem;">
+          <strong>⚠️ Requiere 1 compra/mes</strong> con tarjeta Nu para mantener la tasa.
+        </div>`;
+    }
+
+    if(e.id === 'revolut' && r && r.isCondicionada) {
+       specialBox += `
+        <div class="alert-box" style="background: rgba(25, 28, 32, 0.5); border: 1px dashed #999; color: #fff; margin-top:0.3rem;">
+          <strong>⚠️ Nueva Condición:</strong> Exige 4 compras de $50/mes y usar Apple/Google Pay.
+        </div>`;
+    }
+
+    let desgloseHtml = '';
+    if (r && r.desglose && r.desglose.length > 0) {
+      desgloseHtml = r.desglose.map(d => `<div style="font-size:0.67rem;color:var(--muted);margin-top:2px">${d.label} → <span style="color:var(--text)">${fmt(d.ganancia)}</span></div>`).join('');
+    }
+
+    html += `
+      <div class="result-card ${isWinner ? 'winner' : ''} ${isND ? 'nd-card' : ''}">
+        <div class="rc-header">
+          <div class="rc-logo" style="background:${e.color};color:${e.colorText || '#fff'}">${e.logo}</div>
+          <div>
+            <div class="rc-name">${e.nombre} <span class="badge-divisor">Base ${e.baseDivisor}d</span></div>
+            <div class="rc-plazo">${r && r.diasCalculo !== dias ? `${r.diasCalculo} días exactos` : `${dias} días`} · ${e.tipo}</div>
+          </div>
+        </div>
+        ${isND ? `
+          <div class="rc-gain nd-val">ND</div>
+          <div class="rc-total">Sin producto a este plazo</div>
+        ` : `
+          <div class="rc-rate">Tasa Ponderada: ${(r.tasa * 100).toFixed(2)}% ${(!isMaxedOut && r.max) ? `(Tope ${fmt(r.max)})` : ''}</div>
+          <div class="rc-gain">+${fmt(r.gananciaTotal)}</div>
+          <div class="rc-total">Capital + Bruto: <span>${fmt(r.saldoFinal)}</span></div>
+          ${desgloseHtml}
+          ${specialBox}
+          <div class="rc-bar"><div class="rc-bar-fill" style="width:${pct}%"></div></div>
+        `}
+      </div>`;
+  });
+
+  html += `</div>`;
+  document.getElementById('calcResults').innerHTML = html;
+}
+
+document.getElementById('montoInput').addEventListener('input', function() { montoActivo = parseFloat(this.value) || 0; render(); });
+document.querySelectorAll('.plazo-tab').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.plazo-tab').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    plazoActivo = parseInt(this.dataset.dias);
+    render();
+  });
+});
+
+// Inicialización
+toggleProfile();
+</script>
+</body>
+</html>
+</antArtifact>
