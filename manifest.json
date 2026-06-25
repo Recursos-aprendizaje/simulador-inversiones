@@ -1,0 +1,16 @@
+{
+  "name": "Simulador de Inversiones",
+  "short_name": "Simulador",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0a0d14",
+  "theme_color": "#0a0d14",
+  "icons": [
+    {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Emoji_u1f4c8.svg/512px-Emoji_u1f4c8.svg.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
