@@ -1,4 +1,4 @@
-<antArtifact identifier="simulador-inversiones-app-github-pages" type="text/html" title="Simulador de Inversiones (Código HTML para GitHub)">
+<antArtifact identifier="simulador-inversiones-app-final" type="text/html" title="Simulador de Inversiones - App Definitiva">
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -11,12 +11,10 @@
 <meta name="apple-mobile-web-app-title" content="Simulador">
 <meta name="theme-color" content="#0a0d14">
 
-<!-- CONEXIÓN AL ARCHIVO MANIFEST.JSON (Esto arregla el ícono en Android) -->
+<!-- CONEXIÓN AL ÍCONO Y AL MANIFEST -->
 <link rel="manifest" href="manifest.json">
-
-<!-- Íconos de respaldo para iOS y navegadores -->
-<link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Emoji_u1f4c8.svg/512px-Emoji_u1f4c8.svg.png">
-<link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Emoji_u1f4c8.svg/512px-Emoji_u1f4c8.svg.png">
+<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/googlefonts/noto-emoji/main/png/512/1f4c8.png">
+<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/googlefonts/noto-emoji/main/png/512/1f4c8.png">
 
 <title>Simulador de Inversiones</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -47,7 +45,7 @@
   
   .container { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 1rem 4rem 1rem; }
   
-  /* Sticky Header */
+  /* Sticky Header Premium */
   header { 
     position: sticky; 
     top: 0; 
@@ -148,7 +146,7 @@
   @media (min-width: 600px) { .results-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); } }
   .result-card { background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 1.2rem; transition: border-color 0.2s; position: relative; overflow: hidden; display:flex; flex-direction: column; }
   .result-card.winner { border-color: rgba(0,229,160,0.5); box-shadow: 0 0 15px rgba(0,229,160,0.1);}
-  .result-card.winner::after { content: '★ MEJOR'; position: absolute; top: 0.6rem; right: 0.8rem; font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--accent); letter-spacing: 0.08em; }
+  .result-card.winner::after { content: '★ MEJOR GANANCIA'; position: absolute; top: 0.6rem; right: 0.8rem; font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--accent); letter-spacing: 0.08em; }
   .result-card.nd-card { opacity: 0.45; }
   
   .rc-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1rem; }
@@ -187,7 +185,7 @@
     </div>
   </div>
 
-  <!-- TABLA VISUAL RESTAURADA ARRIBA -->
+  <!-- TABLA VISUAL (ARRIBA) -->
   <div class="section-title">TABLA DE TASAS OFICIALES</div>
   <div class="table-wrap">
     <table>
@@ -270,7 +268,7 @@
     </table>
   </div>
 
-  <!-- CALCULADORA RESTAURADA ABAJO -->
+  <!-- CALCULADORA (ABAJO) -->
   <div class="calc-section">
     <div class="calc-title">Calculadora Inteligente</div>
     
@@ -573,7 +571,7 @@ function render() {
           <div class="rc-gain nd-val">ND</div>
           <div class="rc-total">No disponible en este plazo</div>
         ` : `
-          <div class="rc-rate" style="margin-bottom:0.5rem">Tasa: ${(r.tasa * 100).toFixed(2)}% ${(!isMaxedOut && r.max) ? `(Tope ${fmt(r.max)})` : ''}</div>
+          <div class="rc-rate" style="margin-bottom:0.5rem">Tasa Base: ${(r.tasa * 100).toFixed(2)}% ${(!isMaxedOut && r.max) ? `(Tope ${fmt(r.max)})` : ''}</div>
           <div class="rc-gain">+${fmt(r.gananciaTotal)}</div>
           <div class="rc-total" style="margin-bottom:0.5rem">Total: <span>${fmt(r.saldoFinal)}</span></div>
           ${desgloseHtml}
