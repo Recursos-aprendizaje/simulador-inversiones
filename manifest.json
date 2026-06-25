@@ -1,13 +1,13 @@
 {
-  "name": "Simulador de Inversiones",
+  "name": "Simulador Financiero",
   "short_name": "Simulador",
-  "start_url": "./index.html",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#0a0d14",
   "theme_color": "#0a0d14",
   "icons": [
     {
-      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Emoji_u1f4c8.svg/512px-Emoji_u1f4c8.svg.png",
+      "src": "https://raw.githubusercontent.com/googlefonts/noto-emoji/main/png/512/1f4c8.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
