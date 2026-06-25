@@ -1,4 +1,4 @@
-<antArtifact identifier="simulador-inversiones-app-nativa-icono-fijo" type="text/html" title="Simulador de Inversiones - App con Ícono Nativo">
+<antArtifact identifier="simulador-inversiones-app-github-pages" type="text/html" title="Simulador de Inversiones (Código HTML para GitHub)">
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -11,12 +11,12 @@
 <meta name="apple-mobile-web-app-title" content="Simulador">
 <meta name="theme-color" content="#0a0d14">
 
-<!-- Ícono PNG externo de alta resolución (Infalible para Android y Apple) -->
+<!-- CONEXIÓN AL ARCHIVO MANIFEST.JSON (Esto arregla el ícono en Android) -->
+<link rel="manifest" href="manifest.json">
+
+<!-- Íconos de respaldo para iOS y navegadores -->
 <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Emoji_u1f4c8.svg/512px-Emoji_u1f4c8.svg.png">
 <link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Emoji_u1f4c8.svg/512px-Emoji_u1f4c8.svg.png">
-
-<!-- MANIFEST: Archivo de instalación para Android con el ícono PNG embebido -->
-<link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Simulador%20de%20Inversiones%22%2C%22short_name%22%3A%22Simulador%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230a0d14%22%2C%22theme_color%22%3A%22%230a0d14%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F1%2F14%2FEmoji_u1f4c8.svg%2F512px-Emoji_u1f4c8.svg.png%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D">
 
 <title>Simulador de Inversiones</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -37,17 +37,17 @@
     min-height: 100vh; 
     padding-bottom: env(safe-area-inset-bottom);
     overflow-x: hidden; 
-    -webkit-tap-highlight-color: transparent; /* Quita el cuadro azul al tocar en Android */
+    -webkit-tap-highlight-color: transparent; 
     -webkit-touch-callout: none;
-    user-select: none; /* Evita que el texto se seleccione como en web */
-    overscroll-behavior-y: none; /* Evita el "pull to refresh" nativo de Chrome */
+    user-select: none; 
+    overscroll-behavior-y: none; 
   }
   
   body::before { content: ''; position: fixed; inset: 0; background-image: linear-gradient(rgba(0,229,160,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,160,0.02) 1px, transparent 1px); background-size: 40px 40px; pointer-events: none; z-index: 0; }
   
   .container { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 1rem 4rem 1rem; }
   
-  /* Sticky Header Premium */
+  /* Sticky Header */
   header { 
     position: sticky; 
     top: 0; 
@@ -148,7 +148,7 @@
   @media (min-width: 600px) { .results-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); } }
   .result-card { background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 1.2rem; transition: border-color 0.2s; position: relative; overflow: hidden; display:flex; flex-direction: column; }
   .result-card.winner { border-color: rgba(0,229,160,0.5); box-shadow: 0 0 15px rgba(0,229,160,0.1);}
-  .result-card.winner::after { content: '★ MEJOR GANANCIA'; position: absolute; top: 0.6rem; right: 0.8rem; font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--accent); letter-spacing: 0.08em; }
+  .result-card.winner::after { content: '★ MEJOR'; position: absolute; top: 0.6rem; right: 0.8rem; font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--accent); letter-spacing: 0.08em; }
   .result-card.nd-card { opacity: 0.45; }
   
   .rc-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1rem; }
@@ -163,9 +163,6 @@
   
   .rc-bar { height: 4px; border-radius: 4px; background: var(--border); margin: 1rem 0 0; overflow: hidden; margin-top: auto; }
   .rc-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--accent), #00c9ff); transition: width 0.6s cubic-bezier(0.4,0,0.2,1); width: 0%; }
-  
-  .badge-divisor { display: inline-block; background: rgba(122,138,170,0.15); color: #9aabcc; font-size: 0.6rem; padding: 2px 6px; border-radius: 4px; margin-left: 5px; vertical-align: middle; }
-  .alert-box { border-radius: 8px; padding: 0.8rem; margin-top: 0.8rem; font-size: 0.7rem; line-height: 1.4; }
 </style>
 </head>
 <body>
@@ -190,7 +187,7 @@
     </div>
   </div>
 
-  <!-- TABLA VISUAL (ARRIBA) -->
+  <!-- TABLA VISUAL RESTAURADA ARRIBA -->
   <div class="section-title">TABLA DE TASAS OFICIALES</div>
   <div class="table-wrap">
     <table>
@@ -273,7 +270,7 @@
     </table>
   </div>
 
-  <!-- CALCULADORA MATEMÁTICA (ABAJO) -->
+  <!-- CALCULADORA RESTAURADA ABAJO -->
   <div class="calc-section">
     <div class="calc-title">Calculadora Inteligente</div>
     
@@ -284,14 +281,14 @@
           <input type="radio" name="accountState" value="empty" checked onchange="render()">
           <div class="radio-card">
             <strong>🌱 Desde Cero ($0)</strong>
-            <span>Usa promociones tope.</span>
+            <span style="color:#7a8aaa;">Usa promociones tope.</span>
           </div>
         </label>
         <label class="state-radio">
           <input type="radio" name="accountState" value="maxed" onchange="render()">
           <div class="radio-card">
             <strong>🏦 Ya Topadas</strong>
-            <span>Usa tasas de excedente.</span>
+            <span style="color:#7a8aaa;">Usa tasas de excedente.</span>
           </div>
         </label>
       </div>
@@ -536,31 +533,31 @@ function render() {
     if(e.id === 'finsus' && dias === 122 && r) {
       const g1 = monto * e.tasas[dias].tasa * (31 / 360), g2 = monto * e.tasas[dias].tasa * (30 / 360), g3 = monto * e.tasas[dias].tasa * (33 / 360), g4 = monto * e.tasas[dias].tasa * (29 / 360);
       specialBox = `
-        <div class="alert-box" style="background: rgba(0, 107, 62, 0.15); border: 1px dashed #006B3E; color: #b5f0e0;">
+        <div style="border-radius: 8px; padding: 0.8rem; margin-top: 0.8rem; font-size: 0.7rem; line-height: 1.4; background: rgba(0, 107, 62, 0.15); border: 1px dashed #006B3E; color: #b5f0e0;">
           <div style="font-weight:600; color:#00e5a0; margin-bottom:2px;">📅 Opc. Pago Mensual:</div>
-          <div style="font-size:0.65rem;">${fmt(g1)} / ${fmt(g2)} / ${fmt(g3)} / ${fmt(g4)}</div>
+          <div style="font-size:0.6rem;">${fmt(g1)} / ${fmt(g2)} / ${fmt(g3)} / ${fmt(g4)}</div>
         </div>`;
     }
 
     if(e.id === 'mercadopago' && r) {
       if (!isMaxedOut && monto > 25000) {
-        specialBox = `<div class="alert-box" style="background: rgba(255, 209, 102, 0.15); border: 1px dashed var(--accent3); color: var(--accent3);"><strong>⏳ Regla MP:</strong> Los $${fmt(monto - 25000)} extras darán 0% el primer mes.</div>`;
+        specialBox = `<div style="border-radius: 8px; padding: 0.8rem; margin-top: 0.8rem; font-size: 0.7rem; line-height: 1.4; background: rgba(255, 209, 102, 0.15); border: 1px dashed var(--accent3); color: var(--accent3);"><strong>⏳ Regla MP:</strong> Los $${fmt(monto - 25000)} extras darán 0% el primer mes.</div>`;
       } else if (isMaxedOut) {
-        specialBox = `<div class="alert-box" style="background: rgba(122, 138, 170, 0.15); border: 1px dashed #7a8aaa; color: #9aabcc;"><strong>ℹ️ Cuenta Topada:</strong> Tu excedente rinde al 6%.</div>`;
+        specialBox = `<div style="border-radius: 8px; padding: 0.8rem; margin-top: 0.8rem; font-size: 0.7rem; line-height: 1.4; background: rgba(122, 138, 170, 0.15); border: 1px dashed #7a8aaa; color: #9aabcc;"><strong>ℹ️ Cuenta Topada:</strong> Tu excedente rinde al 6%.</div>`;
       }
     }
 
     if(e.id === 'nu' && r && r.isCondicionada) {
-       specialBox += `<div class="alert-box" style="background: rgba(130, 10, 209, 0.15); border: 1px dashed #d49fff; color: #d49fff; margin-top:0.3rem;"><strong>⚠️ Misión Nu:</strong> Requiere 1 compra/mes.</div>`;
+       specialBox += `<div style="border-radius: 8px; padding: 0.8rem; margin-top: 0.8rem; font-size: 0.7rem; line-height: 1.4; background: rgba(130, 10, 209, 0.15); border: 1px dashed #d49fff; color: #d49fff;"><strong>⚠️ Misión Nu:</strong> Requiere 1 compra/mes.</div>`;
     }
 
     if(e.id === 'revolut' && r && r.isCondicionada) {
-       specialBox += `<div class="alert-box" style="background: rgba(25, 28, 32, 0.5); border: 1px dashed #999; color: #fff; margin-top:0.3rem;"><strong>⚠️ Misión Revolut:</strong> Requiere 4 compras de $50/mes.</div>`;
+       specialBox += `<div style="border-radius: 8px; padding: 0.8rem; margin-top: 0.8rem; font-size: 0.7rem; line-height: 1.4; background: rgba(25, 28, 32, 0.5); border: 1px dashed #999; color: #fff;"><strong>⚠️ Misión Revolut:</strong> Requiere 4 compras de $50/mes con Apple/Google Pay.</div>`;
     }
 
     let desgloseHtml = '';
     if (r && r.desglose && r.desglose.length > 0) {
-      desgloseHtml = r.desglose.map(d => `<div style="font-size:0.7rem;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between;"><span>${d.label}</span> <span style="color:#fff">${fmt(d.ganancia)}</span></div>`).join('');
+      desgloseHtml = r.desglose.map(d => `<div style="font-size:0.67rem;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between;"><span>${d.label}</span> <span style="color:#fff">${fmt(d.ganancia)}</span></div>`).join('');
     }
 
     html += `
@@ -569,14 +566,14 @@ function render() {
           <div class="rc-logo" style="background:${e.color};color:${e.colorText || '#fff'}">${e.logo}</div>
           <div>
             <div class="rc-name">${e.nombre} <span class="badge-divisor">${e.baseDivisor}d</span></div>
-            <div class="rc-plazo">${r && r.diasCalculo !== dias ? `${r.diasCalculo} días exactos` : `${dias} días`} · ${e.tipo}</div>
+            <div class="rc-plazo">${r && r.diasCalculo !== dias ? `${r.diasCalculo} días exactos` : `${dias} días`}</div>
           </div>
         </div>
         ${isND ? `
           <div class="rc-gain nd-val">ND</div>
           <div class="rc-total">No disponible en este plazo</div>
         ` : `
-          <div class="rc-rate" style="margin-bottom:0.5rem">Tasa Base: ${(r.tasa * 100).toFixed(2)}% ${(!isMaxedOut && r.max) ? `(Tope ${fmt(r.max)})` : ''}</div>
+          <div class="rc-rate" style="margin-bottom:0.5rem">Tasa: ${(r.tasa * 100).toFixed(2)}% ${(!isMaxedOut && r.max) ? `(Tope ${fmt(r.max)})` : ''}</div>
           <div class="rc-gain">+${fmt(r.gananciaTotal)}</div>
           <div class="rc-total" style="margin-bottom:0.5rem">Total: <span>${fmt(r.saldoFinal)}</span></div>
           ${desgloseHtml}
