@@ -31,7 +31,7 @@
     --bg: #0a0d14; --surface: #111520; --card: #161c2e; --border: #1f2a42;
     --accent: #00e5a0; --accent2: #ff6b35; --accent3: #ffd166;
     --text: #e8edf8; --muted: #7a8aaa; --nd: #3a4160; --danger: #ff4d6d;
-    --nu-color: #820AD1;
+    --nu-color: #820AD1; --kubo-color: #7bba25;
   }
   
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -113,6 +113,7 @@
   .rate.low { background: rgba(122,138,170,0.08); color: #9aabcc; border: 1px solid rgba(122,138,170,0.15); }
   .rate.nd { background: transparent; color: var(--nd); border: 1px dashed #2a3550; font-size: 0.78rem; }
   .rate.turbo { background: rgba(130,10,209,0.15); color: #d49fff; border: 1px solid rgba(130,10,209,0.4); }
+  .rate.kubo { background: rgba(123,186,37,0.15); color: var(--kubo-color); border: 1px solid rgba(123,186,37,0.4); }
   .rate.revo-cond { background: rgba(25,28,32,0.5); color: #fff; border: 1px solid #666; }
   
   .sub-note { font-size: 0.65rem; color: var(--muted); margin-top: 4px; display: block; line-height: 1.2; }
@@ -194,7 +195,7 @@
   </div>
 
   <!-- TABLA VISUAL (ARRIBA) -->
-  <div class="section-title">TABLA DE TASAS OFICIALES</div>
+  <div class="section-title">TABLA DE TASAS OFICIALES (Actualizada)</div>
   <div class="table-wrap">
     <table>
       <thead>
@@ -220,6 +221,17 @@
         <tr>
           <td>
             <div class="entity-cell">
+              <div class="entity-logo" style="background:#7bba25;color:#fff">Ku</div>
+              <div><div class="entity-name">Kubo Financiero</div><div class="entity-type">Plazo a 1 Día</div></div>
+            </div>
+          </td>
+          <td class="center"><span class="rate kubo">13.00%</span></td>
+          <td class="center"><span class="rate kubo">13.00%</span></td>
+          <td class="center"><span class="rate kubo">13.00%</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="entity-cell">
               <div class="entity-logo" style="background:#191C20;color:#fff;border:1px solid #333">Rv</div>
               <div><div class="entity-name">Revolut</div><div id="rv-type-label" class="entity-type">Plan Estándar</div></div>
             </div>
@@ -235,20 +247,9 @@
               <div><div class="entity-name">Openbank</div><div class="entity-type">Cuenta Débito</div></div>
             </div>
           </td>
-          <td class="center"><span class="rate top">13.00%</span><br><span class="sub-note">Tope $40k</span></td>
-          <td class="center"><span class="rate top">13.00%</span><br><span class="sub-note">Tope $40k</span></td>
-          <td class="center"><span class="rate top">13.00%</span><br><span class="sub-note">Tope $40k</span></td>
-        </tr>
-        <tr>
-          <td>
-            <div class="entity-cell">
-              <div class="entity-logo" style="background:#006B3E;color:#fff">Fn</div>
-              <div><div class="entity-name">Finsus</div><div class="entity-type">Plazo Fijo</div></div>
-            </div>
-          </td>
-          <td class="center"><span class="rate mid">7.19%</span></td>
-          <td class="center"><span class="rate high">7.59%</span></td>
-          <td class="center"><span class="rate top">11.50%</span></td>
+          <td class="center"><span class="rate top">13.00%</span><br><span class="sub-note">Tope $30k</span></td>
+          <td class="center"><span class="rate top">13.00%</span><br><span class="sub-note">Tope $30k</span></td>
+          <td class="center"><span class="rate top">13.00%</span><br><span class="sub-note">Tope $30k</span></td>
         </tr>
         <tr>
           <td>
@@ -268,8 +269,30 @@
               <div><div class="entity-name">Stori</div><div class="entity-type">Inversión+</div></div>
             </div>
           </td>
-          <td class="center"><span class="rate low">6.83%</span></td>
-          <td class="center"><span class="rate high">7.77%</span></td>
+          <td class="center"><span class="rate low">7.05%</span></td>
+          <td class="center"><span class="rate top">10.57%</span></td>
+          <td class="center"><span class="rate nd">ND</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="entity-cell">
+              <div class="entity-logo" style="background:#7bba25;color:#fff;border:1px solid #5a8a18">Ku</div>
+              <div><div class="entity-name">Kubo Financiero</div><div class="entity-type">Plazos Fijos</div></div>
+            </div>
+          </td>
+          <td class="center"><span class="rate mid">7.50%</span></td>
+          <td class="center"><span class="rate mid">7.60%</span></td>
+          <td class="center"><span class="rate nd">ND</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="entity-cell">
+              <div class="entity-logo" style="background:#006B3E;color:#fff">Fn</div>
+              <div><div class="entity-name">Finsus</div><div class="entity-type">Plazo Fijo</div></div>
+            </div>
+          </td>
+          <td class="center"><span class="rate low">7.09%</span></td>
+          <td class="center"><span class="rate mid">7.19%</span></td>
           <td class="center"><span class="rate nd">ND</span></td>
         </tr>
       </tbody>
@@ -393,29 +416,47 @@ const entidadesBase = [
     }
   },
   {
-    id: 'openbank', nombre: 'Openbank', tipo: 'Cuenta Débito', logo: 'OB', color: '#ec0000', baseDivisor: 365,
+    id: 'kubodiario', nombre: 'Kubo Financiero', tipo: 'Plazo 1 Día (Liquidez)', logo: 'Ku', color: '#7bba25', baseDivisor: 360,
     tasas: {
-      7:   { tasa: 0.1300, max: 40000, tasaAlt: 0.0730 },
-      30:  { tasa: 0.1300, max: 40000, tasaAlt: 0.0730 },
-      90:  { tasa: 0.1300, max: 40000, tasaAlt: 0.0730 },
-      122: { tasa: 0.1300, max: 40000, tasaAlt: 0.0730 }
+      7:   { tasa: 0.1300, max: null },
+      30:  { tasa: 0.1300, max: null },
+      90:  { tasa: 0.1300, max: null },
+      122: { tasa: 0.1300, max: null }
     }
   },
   {
-    id: 'finsus', nombre: 'Finsus', tipo: 'Plazo Fijo', logo: 'Fn', color: '#006B3E', baseDivisor: 360,
+    id: 'openbank', nombre: 'Openbank', tipo: 'Cuenta Débito', logo: 'OB', color: '#ec0000', baseDivisor: 365,
     tasas: {
-      7:   { tasa: 0.0709, max: null },
-      30:  { tasa: 0.0719, max: null },
-      90:  { tasa: 0.0759, max: null },
-      122: { tasa: 0.1150, max: null } 
+      7:   { tasa: 0.1300, max: 30000, tasaAlt: 0.0700 },
+      30:  { tasa: 0.1300, max: 30000, tasaAlt: 0.0700 },
+      90:  { tasa: 0.1300, max: 30000, tasaAlt: 0.0700 },
+      122: { tasa: 0.1300, max: 30000, tasaAlt: 0.0700 }
     }
   },
   {
     id: 'stori', nombre: 'Stori', tipo: 'Inversión+', logo: 'St', color: '#6A1BE4', baseDivisor: 360,
     tasas: {
       7:   null,
-      30:  { tasa: 0.0683, max: null },
-      90:  { tasa: 0.0777, max: null },
+      30:  { tasa: 0.0705, max: null },
+      90:  { tasa: 0.1057, max: null },
+      122: null 
+    }
+  },
+  {
+    id: 'kubofijo', nombre: 'Kubo Financiero', tipo: 'Plazos Fijos', logo: 'Ku', color: '#5a8a18', baseDivisor: 360,
+    tasas: {
+      7:   { tasa: 0.0707, max: null },
+      30:  { tasa: 0.0750, max: null },
+      90:  { tasa: 0.0760, max: null },
+      122: null 
+    }
+  },
+  {
+    id: 'finsus', nombre: 'Finsus', tipo: 'Plazo Fijo', logo: 'Fn', color: '#006B3E', baseDivisor: 360,
+    tasas: {
+      7:   { tasa: 0.0701, max: null },
+      30:  { tasa: 0.0709, max: null },
+      90:  { tasa: 0.0719, max: null },
       122: null 
     }
   }
@@ -532,15 +573,6 @@ function render() {
     
     let specialBox = '';
     
-    if(e.id === 'finsus' && dias === 122 && r) {
-      const g1 = monto * e.tasas[dias].tasa * (31 / 360), g2 = monto * e.tasas[dias].tasa * (30 / 360), g3 = monto * e.tasas[dias].tasa * (33 / 360), g4 = monto * e.tasas[dias].tasa * (29 / 360);
-      specialBox = `
-        <div style="border-radius: 8px; padding: 0.8rem; margin-top: 0.8rem; font-size: 0.7rem; line-height: 1.4; background: rgba(0, 107, 62, 0.15); border: 1px dashed #006B3E; color: #b5f0e0;">
-          <div style="font-weight:600; color:#00e5a0; margin-bottom:2px;">📅 Opc. Pago Mensual:</div>
-          <div style="font-size:0.6rem;">${fmt(g1)} / ${fmt(g2)} / ${fmt(g3)} / ${fmt(g4)}</div>
-        </div>`;
-    }
-
     if(e.id === 'mercadopago' && r) {
       if (!isMaxedOut && monto > 25000) {
         specialBox = `<div style="border-radius: 8px; padding: 0.8rem; margin-top: 0.8rem; font-size: 0.7rem; line-height: 1.4; background: rgba(255, 209, 102, 0.15); border: 1px dashed var(--accent3); color: var(--accent3);"><strong>⏳ Regla MP:</strong> Los $${fmt(monto - 25000)} extras darán 0% el primer mes.</div>`;
