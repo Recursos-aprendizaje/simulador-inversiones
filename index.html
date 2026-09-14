@@ -67,7 +67,7 @@
   .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
   .table-wrap { overflow-x: auto; border-radius: 16px; border: 1px solid var(--border); background: var(--card); margin-bottom: 2.5rem; -webkit-overflow-scrolling: touch; box-shadow: 0 10px 30px rgba(0,0,0,0.3);}
-  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; min-width: 950px;}
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; min-width: 850px;}
   thead tr { background: rgba(0,229,160,0.05); border-bottom: 1px solid var(--border); }
   th { padding: 1rem; text-align: left; font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
   th.center { text-align: center; }
@@ -117,8 +117,8 @@
   .calc-input { width: 100%; background: var(--surface); border: 2px solid var(--border); border-radius: 12px; color: var(--text); font-family: 'DM Mono', monospace; font-size: 1.2rem; padding: 0.9rem 0.9rem 0.9rem 2.2rem; outline: none; transition: border-color 0.2s; -webkit-appearance: none; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);}
   .calc-input:focus { border-color: var(--accent); }
   
-  .plazo-tabs { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-  .plazo-tab { flex: 1 1 auto; background: var(--surface); border: 2px solid var(--border); border-radius: 10px; color: var(--muted); font-family: 'DM Mono', monospace; font-size: 0.75rem; padding: 0.8rem 0.5rem; cursor: pointer; transition: all 0.2s; text-align: center; min-width: 60px;}
+  .plazo-tabs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; }
+  .plazo-tab { background: var(--surface); border: 2px solid var(--border); border-radius: 10px; color: var(--muted); font-family: 'DM Mono', monospace; font-size: 0.75rem; padding: 0.8rem 0.5rem; cursor: pointer; transition: all 0.2s; flex: 1; text-align: center; }
   .plazo-tab.active { background: rgba(0,229,160,0.12); border-color: var(--accent); color: var(--accent); font-weight: 600; }
   
   .results-title { font-family: 'DM Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.6rem; }
@@ -280,7 +280,7 @@
           <td class="center"><span class="rate nd">ND</span></td>
           <td class="center"><span class="rate top">12.00%</span></td>
         </tr>
-        <!-- FINSUS (CON LA COSECHA INCLUIDA) -->
+        <!-- FINSUS -->
         <tr>
           <td>
             <div class="entity-cell">
@@ -327,17 +327,17 @@
         <label>Monto a Invertir (MXN)</label>
         <div class="input-wrap">
           <span class="input-prefix">$</span>
-          <input type="tel" class="calc-input" id="montoInput" value="54000" min="1" step="100">
+          <input type="tel" class="calc-input" id="montoInput" value="25000" min="1" step="100">
         </div>
       </div>
       <div class="input-group">
         <label>Plazo de Inversión</label>
         <div class="plazo-tabs">
           <button class="plazo-tab" data-dias="7">7 días</button>
-          <button class="plazo-tab" data-dias="30">1 mes</button>
+          <button class="plazo-tab active" data-dias="30">1 mes</button>
           <button class="plazo-tab" data-dias="60">2 meses</button>
           <button class="plazo-tab" data-dias="90">3 meses</button>
-          <button class="plazo-tab active" data-dias="120">4 meses</button>
+          <button class="plazo-tab" data-dias="120">4 meses</button>
           <button class="plazo-tab" data-dias="365">1 año (365d)</button>
         </div>
       </div>
@@ -441,11 +441,13 @@ const mpTurbo = {
   calc: function(monto, dias, isMaxedOut) {
       let gTotal = 0, desglose = [], tasaMain = 0.15;
       if (isMaxedOut) {
-          gTotal = monto * 0.054 * (dias / 365);
+          tasaMain = 0.054;
+          gTotal = monto * tasaMain * (dias / 365);
           desglose.push({ label: `Excedente @ 5.40%`, tasa: 0.054, ganancia: gTotal});
       } else {
           if (monto <= 25000) {
-              gTotal = monto * 0.15 * (dias / 365);
+              tasaMain = 0.15;
+              gTotal = monto * tasaMain * (dias / 365);
               desglose.push({ label: `Tope $25k @ 15.00%`, tasa: 0.15, ganancia: gTotal});
           } else {
               let gBase = 25000 * 0.15 * (dias / 365);
@@ -479,12 +481,11 @@ const kuboFijo = {
 };
 const finsus = {
   id: 'finsus', nombre: 'Finsus', tipo: 'Plazo Fijo', logo: 'Fn', color: '#006B3E', baseDivisor: 360,
-  // AQUI METIMOS LA COSECHA A 120 DIAS
-  tasas: { 7: {tasa: 0.0701}, 30: {tasa: 0.0709}, 60: null, 90: {tasa: 0.0719}, 120: {tasa: 0.1100, cond: false}, 365: {tasa: 0.0869} }
+  tasas: { 7: {tasa: 0.0701}, 30: {tasa: 0.0709}, 60: null, 90: {tasa: 0.0719}, 120: {tasa: 0.1100}, 365: {tasa: 0.0869} }
 };
 
 let isTurboMode = false;
-let plazoActivo = 120; // Lo dejé predeterminado a 4 meses para que veas directo a Finsus
+let plazoActivo = 30;
 
 const fmt = (n) => new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', minimumFractionDigits: 2 }).format(n);
 
@@ -493,7 +494,6 @@ function setProfile(toTurbo) {
   toggleProfile();
 }
 
-// FUNCION QUE MODIFICA LA TABLA HTML
 function toggleProfile() {
   isTurboMode = document.getElementById('profileToggle').checked;
   
@@ -549,37 +549,48 @@ function toggleProfile() {
   render();
 }
 
+// LOGICA MATEMATICA CORREGIDA (CERO ERRORES DE NaN)
 function calcConDesglose(monto, e, dias, isMaxedOut) {
   const tasaDato = e.tasas[dias];
   if (!tasaDato) return null;
   if (e.calc) return e.calc(monto, dias, isMaxedOut);
 
-  const baseDivisor = e.baseDivisor;
+  const baseDivisor = e.baseDivisor || 360;
   const { tasa, max, tasaAlt, diasOverride, cond } = tasaDato;
-  let gananciaTotal = 0, desglose = [];
   const diasCalculo = diasOverride || dias;
+  let gananciaTotal = 0, desglose = [];
   let tasaFinal = tasa;
 
-  if (isMaxedOut && max !== null) {
+  // Verificamos si la cuenta realmente tiene un tope numérico
+  const tieneTope = (typeof max === 'number' && max > 0 && typeof tasaAlt === 'number');
+
+  if (isMaxedOut && tieneTope) {
     gananciaTotal = monto * tasaAlt * (diasCalculo / baseDivisor);
     desglose.push({ label: `Excedente @ ${(tasaAlt*100).toFixed(2)}%`, tasa: tasaAlt, ganancia: gananciaTotal });
     tasaFinal = tasaAlt;
+  } else if (!isMaxedOut && tieneTope && monto > max) {
+    const g1 = max * tasa * (diasCalculo / baseDivisor);
+    const g2 = (monto - max) * tasaAlt * (diasCalculo / baseDivisor);
+    gananciaTotal = g1 + g2;
+    desglose.push({ label: `Hasta ${fmt(max)} @ ${(tasa*100).toFixed(2)}%`, tasa: tasa, ganancia: g1 });
+    desglose.push({ label: `Exceso (${fmt(monto - max)}) @ ${(tasaAlt*100).toFixed(2)}%`, tasa: tasaAlt, ganancia: g2 });
+    tasaFinal = tasa;
   } else {
-    if (max !== null && monto > max) {
-      const g1 = max * tasa * (diasCalculo / baseDivisor);
-      gananciaTotal += g1;
-      desglose.push({ label: `Hasta ${fmt(max)} @ ${(tasa*100).toFixed(2)}%`, tasa: tasa, ganancia: g1 });
-      const g2 = (monto - max) * tasaAlt * (diasCalculo / baseDivisor);
-      gananciaTotal += g2;
-      desglose.push({ label: `Exceso (${fmt(monto - max)}) @ ${(tasaAlt*100).toFixed(2)}%`, tasa: tasaAlt, ganancia: g2 });
-    } else {
-      const g = monto * tasa * (diasCalculo / baseDivisor);
-      gananciaTotal += g;
-      desglose.push({ label: `Bruto @ ${(tasa*100).toFixed(2)}%`, tasa: tasa, ganancia: g });
-    }
+    // Para cuentas sin tope (Kubo, Finsus, Stori, etc.) o montos dentro del límite
+    gananciaTotal = monto * tasa * (diasCalculo / baseDivisor);
+    desglose.push({ label: `Bruto @ ${(tasa*100).toFixed(2)}%`, tasa: tasa, ganancia: gananciaTotal });
+    tasaFinal = tasa;
   }
 
-  return { gananciaTotal, saldoFinal: monto + gananciaTotal, tasa: tasaFinal, max: max, diasCalculo: diasCalculo, desglose: desglose, isCondicionada: cond };
+  return { 
+    gananciaTotal: gananciaTotal, 
+    saldoFinal: monto + gananciaTotal, 
+    tasa: tasaFinal, 
+    max: tieneTope ? max : null, 
+    diasCalculo: diasCalculo, 
+    desglose: desglose, 
+    isCondicionada: Boolean(cond) 
+  };
 }
 
 function render() {
@@ -600,8 +611,8 @@ function render() {
   entidadesActivas.push(finsus);
 
   const resultados = entidadesActivas.map(e => { return { entidad: e, resultado: calcConDesglose(monto, e, dias, isMaxedOut) }; });
-  const ganancias = resultados.filter(r => r.resultado).map(r => r.resultado.gananciaTotal);
-  const maxGanancia = Math.max(...ganancias);
+  const ganancias = resultados.filter(r => r.resultado && !isNaN(r.resultado.gananciaTotal)).map(r => r.resultado.gananciaTotal);
+  const maxGanancia = ganancias.length > 0 ? Math.max(...ganancias) : 0;
 
   const ordenados = [...resultados].sort((a, b) => {
     if (!a.resultado && !b.resultado) return 0;
@@ -613,9 +624,9 @@ function render() {
   let html = `<div class="results-grid">`;
 
   ordenados.forEach(({ entidad: e, resultado: r }) => {
-    const isWinner = r && r.gananciaTotal === maxGanancia;
+    const isWinner = r && r.gananciaTotal === maxGanancia && maxGanancia > 0;
     const isND = !r;
-    const pct = r ? (r.gananciaTotal / maxGanancia * 100).toFixed(1) : 0;
+    const pct = (r && maxGanancia > 0) ? (r.gananciaTotal / maxGanancia * 100).toFixed(1) : 0;
     
     let specialBox = '';
     
@@ -642,8 +653,7 @@ function render() {
     if(e.id === 'stori' && r && r.isCondicionada && dias === 60) {
        specialBox += `<div style="border-radius: 8px; padding: 0.8rem; margin-top: 0.8rem; font-size: 0.7rem; line-height: 1.4; background: rgba(106, 27, 228, 0.15); border: 1px dashed #b18fff; color: #b18fff;"><strong>⚠️ Stori Pro:</strong> Requiere gastar $2,000/mes con TDC.</div>`;
     }
-    
-    // ALERTA VISUAL DE LA COSECHA DE FINSUS
+
     if(e.id === 'finsus' && dias === 120 && r) {
        specialBox += `<div style="border-radius: 8px; padding: 0.8rem; margin-top: 0.8rem; font-size: 0.7rem; line-height: 1.4; background: rgba(0, 107, 62, 0.15); border: 1px dashed #006B3E; color: #5ae0b8;"><strong>🌾 Promo Cosecha:</strong> 11.00% libre de membresía.</div>`;
     }
