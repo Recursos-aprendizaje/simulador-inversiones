@@ -1,4 +1,4 @@
-const CACHE_NAME = 'simulador-inversiones-v2';
+const CACHE_NAME = 'simulador-inversiones-v3';
 const ASSETS = [
   '/simulador-inversiones/',
   '/simulador-inversiones/index.html',
